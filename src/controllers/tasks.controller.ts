@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { tasksService } from "@/services/tasks.service";
-import { NewTask } from "@/protocols/tasks.protocol";
+import { NewTask, Filters } from "@/protocols/tasks.protocol";
 
 async function get(req: Request, res: Response) {
-    const { sortByDueDate, category, status } = req.query;
-    const tasks = await tasksService.findAll(sortByDueDate as string, category as string, status as string);
+    const { sortByDueDate, category, status } = req.query as Filters;
+    const tasks = await tasksService.findAll(sortByDueDate, category, status);
     return res.status(httpStatus.OK).send(tasks);
 }
 

@@ -3,3 +3,9 @@ export type NewTask = {
     dueDate: string;
     category?: string;
 };
+
+export type Filters = {
+    sortByDueDate?: string;
+    category?: string;
+    status?: string;
+};
