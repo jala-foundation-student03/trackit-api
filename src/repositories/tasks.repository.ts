@@ -17,9 +17,9 @@ function create(taskData: NewTask) {
     ]);
 }
 
-async function findAll() {
-    const tasks = await db.query(`
-        SELECT
+async function findAll(sortByDueDate: string, category: string, status: string) {
+    let query = `
+            SELECT
             "id",
             "description",
             TO_CHAR("dueDate", 'DD-MM-YYYY') AS "dueDate",
@@ -29,7 +29,24 @@ async function findAll() {
             "updatedAt"
         FROM tasks
         WHERE "status" <> 'canceled'
-    `);
+    `;
+    const queryParams = [];
+
+    if (category) {
+        query += ` AND "category" = $${queryParams.length + 1}`;
+        queryParams.push(category);
+    }
+
+    if (status) {
+        query += ` AND "status" = $${queryParams.length + 1}`;
+        queryParams.push(status);
+    }
+
+    if(sortByDueDate === "true") {
+        query += ` ORDER BY "dueDate"`
+    }
+
+    const tasks = await db.query(query, queryParams);
     return tasks.rows;
 }
 

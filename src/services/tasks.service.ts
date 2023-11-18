@@ -1,8 +1,8 @@
 import { tasksRepository } from "@/repositories/tasks.repository";
 import { NewTask } from "@/protocols/tasks.protocol";
 
-function findAll() {
-    return tasksRepository.findAll();
+function findAll(sortByDueDate: string, category: string, status: string) {
+    return tasksRepository.findAll(sortByDueDate, category, status);
 } 
 
 function create(taskData: NewTask) {

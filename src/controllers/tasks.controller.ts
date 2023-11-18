@@ -4,7 +4,8 @@ import { tasksService } from "@/services/tasks.service";
 import { NewTask } from "@/protocols/tasks.protocol";
 
 async function get(req: Request, res: Response) {
-    const tasks = await tasksService.findAll();
+    const { sortByDueDate, category, status } = req.query;
+    const tasks = await tasksService.findAll(sortByDueDate as string, category as string, status as string);
     return res.status(httpStatus.OK).send(tasks);
 }
 
@@ -16,10 +17,10 @@ async function create(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
     const taskData = req.body as NewTask;
-    
+
     const taskId = Number(req.params.taskId);
     if (isNaN(taskId)) {
-        throw { type: "badRequest", message: "Invalid task Id"}
+        throw { type: "badRequest", message: "Invalid task Id" };
     }
 
     await tasksService.update(taskId, taskData);
@@ -29,7 +30,7 @@ async function update(req: Request, res: Response) {
 async function cancel(req: Request, res: Response) {
     const taskId = Number(req.params.taskId);
     if (isNaN(taskId)) {
-        throw { type: "badRequest", message: "Invalid task Id"}
+        throw { type: "badRequest", message: "Invalid task Id" };
     }
 
     await tasksService.cancel(taskId);
@@ -39,7 +40,7 @@ async function cancel(req: Request, res: Response) {
 async function complete(req: Request, res: Response) {
     const taskId = Number(req.params.taskId);
     if (isNaN(taskId)) {
-        throw { type: "badRequest", message: "Invalid task Id"}
+        throw { type: "badRequest", message: "Invalid task Id" };
     }
 
     await tasksService.complete(taskId);
@@ -48,11 +49,10 @@ async function complete(req: Request, res: Response) {
 
 async function completeMany(req: Request, res: Response) {
     const body = req.body;
-    const tasksId = body.tasksId as number[]
+    const tasksId = body.tasksId as number[];
     await tasksService.completeMany(tasksId);
     return res.status(httpStatus.NO_CONTENT).send("Tasks set as completed");
 }
-
 
 export const tasksController = {
     create,
