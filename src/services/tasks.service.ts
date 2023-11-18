@@ -9,6 +9,20 @@ function create(taskData: NewTask) {
     });
 }
 
+async function update(taskId: number, taskData: NewTask) {
+    const foundTask = await tasksRepository.findById(taskId);
+    if (!foundTask) {
+        throw { type: "notFound", message: "Task does not exist" };
+    }
+
+    const dueDateFormated = taskData.dueDate.split("-").reverse().join("-");
+    return tasksRepository.updateById(taskId, {
+        ...taskData,
+        dueDate: dueDateFormated,
+    });
+}
+
 export const tasksService = {
     create,
+    update,
 };

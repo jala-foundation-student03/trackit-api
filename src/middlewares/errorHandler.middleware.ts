@@ -6,6 +6,10 @@ export function errorHandler(error: ErrorWithMessage, req: Request, res: Respons
     console.log(error);
 
     switch (error.type) {
+        case "badRequest":
+            return res.status(httpStatus.BAD_REQUEST).send(error.message);
+        case "notFound":
+            return res.status(httpStatus.NOT_FOUND).send(error.message);
         case "unprocessable":
             return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message);
         default:

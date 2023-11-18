@@ -11,7 +11,10 @@ function create(taskData: NewTask) {
             category,
         ]);
     }
-    return db.query(`INSERT INTO tasks ("description", "dueDate") VALUES ($1, TO_DATE($2, 'YYYY-MM-DD'))`, [description, dueDate]);
+    return db.query(`INSERT INTO tasks ("description", "dueDate") VALUES ($1, TO_DATE($2, 'YYYY-MM-DD'))`, [
+        description,
+        dueDate,
+    ]);
 }
 
 function findAll() {
@@ -28,7 +31,44 @@ function findAll() {
     `);
 }
 
+async function findById(taskId: number) {
+    const task = await db.query(
+        `
+        SELECT
+            "id",
+            "description",
+            TO_CHAR("dueDate", 'DD-MM-YYYY') AS "dueDate",
+            "category",
+            "createdAt",
+            "updatedAt"
+        FROM tasks
+        WHERE "id" = $1
+    `,
+        [taskId]
+    );
+    return task.rows[0];
+}
+
+function updateById(taskId: number, taskData: NewTask) {
+    const { description, dueDate, category } = taskData;
+
+    return db.query(
+        `
+        UPDATE tasks
+        SET 
+            "description" = $1,
+            "dueDate" = $2,
+            "category" = $3,
+            "updatedAt" = $5
+        WHERE id = $6
+    `,
+        [description, dueDate, category, new Date(), taskId]
+    );
+}
+
 export const tasksRepository = {
     create,
     findAll,
+    findById,
+    updateById,
 };
