@@ -47,7 +47,8 @@ async function complete(req: Request, res: Response) {
 }
 
 async function completeMany(req: Request, res: Response) {
-    const tasksId = req.body as number[];
+    const body = req.body;
+    const tasksId = body.tasksId as number[]
     await tasksService.completeMany(tasksId);
     return res.status(httpStatus.NO_CONTENT).send("Tasks set as completed");
 }
