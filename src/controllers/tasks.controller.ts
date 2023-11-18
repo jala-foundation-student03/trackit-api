@@ -3,6 +3,11 @@ import httpStatus from "http-status";
 import { tasksService } from "@/services/tasks.service";
 import { NewTask } from "@/protocols/tasks.protocol";
 
+async function get(req: Request, res: Response) {
+    const tasks = await tasksService.findAll();
+    return res.status(httpStatus.OK).send(tasks);
+}
+
 async function create(req: Request, res: Response) {
     const taskData = req.body as NewTask;
     await tasksService.create(taskData);
@@ -54,4 +59,5 @@ export const tasksController = {
     cancel,
     complete,
     completeMany,
+    get,
 };

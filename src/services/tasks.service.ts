@@ -1,6 +1,10 @@
 import { tasksRepository } from "@/repositories/tasks.repository";
 import { NewTask } from "@/protocols/tasks.protocol";
 
+function findAll() {
+    return tasksRepository.findAll();
+} 
+
 function create(taskData: NewTask) {
     const dueDateFormated = taskData.dueDate.split("-").reverse().join("-");
     return tasksRepository.create({
@@ -73,4 +77,5 @@ export const tasksService = {
     cancel,
     complete,
     completeMany,
+    findAll,
 };

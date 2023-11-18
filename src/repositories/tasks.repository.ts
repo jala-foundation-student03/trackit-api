@@ -17,18 +17,20 @@ function create(taskData: NewTask) {
     ]);
 }
 
-function findAll() {
-    return db.query(`
+async function findAll() {
+    const tasks = await db.query(`
         SELECT
             "id",
             "description",
             TO_CHAR("dueDate", 'DD-MM-YYYY') AS "dueDate",
+            "status",
             "category",
             "createdAt",
             "updatedAt"
         FROM tasks
         WHERE "status" <> 'canceled'
     `);
+    return tasks.rows;
 }
 
 async function findById(taskId: number) {
