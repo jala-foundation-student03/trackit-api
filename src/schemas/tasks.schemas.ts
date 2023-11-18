@@ -13,7 +13,6 @@ export const schemaUpdateTask = joi.object({
     description: joi.string().min(3).required(),
     dueDate: joi.date().format("DD-MM-YYYY").required(),
     category: joi.string().min(3).required(),
-    status: joi.string().min(3).required(),
 });
 
 export const schemaCompleteMany = joi.object({

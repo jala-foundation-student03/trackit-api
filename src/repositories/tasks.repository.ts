@@ -79,8 +79,8 @@ function updateById(taskId: number, taskData: NewTask) {
             "description" = $1,
             "dueDate" = $2,
             "category" = $3,
-            "updatedAt" = $5
-        WHERE id = $6
+            "updatedAt" = $4
+        WHERE id = $5
     `,
         [description, dueDate, category, new Date(), taskId]
     );
