@@ -49,9 +49,28 @@ async function complete(taskId: number) {
     return tasksRepository.completeById(taskId);
 }
 
+async function completeMany(tasksId: number[]) {
+    for (const taskId of tasksId) {
+        const foundTask = await tasksRepository.findById(taskId);
+        if (!foundTask) {
+            throw { type: "notFound", message: "One or more task does not exist" };
+        }
+        if (foundTask.status === "completed") {
+            throw { type: "conflict", message: "Task is already canceled" };
+        }
+        if (foundTask.status === "canceled") {
+            throw { type: "badRequest", message: "You can't complete a canceled task" };
+        }
+    }
+    for (const taskId of tasksId) {
+        await tasksRepository.completeById(taskId);
+    }
+}
+
 export const tasksService = {
     create,
     update,
     cancel,
     complete,
+    completeMany,
 };

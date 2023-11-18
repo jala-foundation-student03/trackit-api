@@ -41,10 +41,17 @@ async function complete(req: Request, res: Response) {
     return res.status(httpStatus.NO_CONTENT).send("Task set as completed");
 }
 
+async function completeMany(req: Request, res: Response) {
+    const tasksId = req.body as number[];
+    await tasksService.completeMany(tasksId);
+    return res.status(httpStatus.NO_CONTENT).send("Tasks set as completed");
+}
+
 
 export const tasksController = {
     create,
     update,
     cancel,
     complete,
+    completeMany,
 };
