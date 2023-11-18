@@ -6,6 +6,8 @@ import { schemaNewTask, schemaUpdateTask } from "@/schemas/tasks.schemas";
 const tasksRouter = Router();
 
 tasksRouter.post("/tasks", validateSchema(schemaNewTask), tasksController.create);
-tasksRouter.put("/tasks/:taskId", validateSchema(schemaUpdateTask), tasksController.update)
+tasksRouter.put("/tasks/:taskId", validateSchema(schemaUpdateTask), tasksController.update);
+tasksRouter.put("/tasks/:taskId/cancel", tasksController.cancel);
+tasksRouter.put("/tasks/:taskId/complete", tasksController.complete);
 
 export { tasksRouter };

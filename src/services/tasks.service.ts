@@ -22,7 +22,36 @@ async function update(taskId: number, taskData: NewTask) {
     });
 }
 
+async function cancel(taskId: number) {
+    const foundTask = await tasksRepository.findById(taskId);
+    if (!foundTask) {
+        throw { type: "notFound", message: "Task does not exist" };
+    }
+    if (foundTask.status === "canceled") {
+        throw { type: "conflict", message: "Task is already canceled" };
+    }
+
+    return tasksRepository.cancelById(taskId);
+}
+
+async function complete(taskId: number) {
+    const foundTask = await tasksRepository.findById(taskId);
+    if (!foundTask) {
+        throw { type: "notFound", message: "Task does not exist" };
+    }
+    if (foundTask.status === "completed") {
+        throw { type: "conflict", message: "Task is already canceled" };
+    }
+    if (foundTask.status === "canceled") {
+        throw { type: "badRequest", message: "You can't complete a canceled task" };
+    }
+
+    return tasksRepository.completeById(taskId);
+}
+
 export const tasksService = {
     create,
     update,
+    cancel,
+    complete,
 };

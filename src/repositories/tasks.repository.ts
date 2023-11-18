@@ -38,6 +38,7 @@ async function findById(taskId: number) {
             "id",
             "description",
             TO_CHAR("dueDate", 'DD-MM-YYYY') AS "dueDate",
+            "status",
             "category",
             "createdAt",
             "updatedAt"
@@ -66,9 +67,37 @@ function updateById(taskId: number, taskData: NewTask) {
     );
 }
 
+function cancelById(taskId: number) {
+    return db.query(
+        `
+        UPDATE tasks
+        SET 
+            "status" = 'canceled',
+            "updatedAt" = $1
+        WHERE id = $2
+    `,
+        [new Date(), taskId]
+    );
+}
+
+function completeById(taskId: number) {
+    return db.query(
+        `
+        UPDATE tasks
+        SET 
+            "status" = 'completed',
+            "updatedAt" = $1
+        WHERE id = $2
+    `,
+        [new Date(), taskId]
+    );
+}
+
 export const tasksRepository = {
     create,
     findAll,
     findById,
     updateById,
+    cancelById,
+    completeById,
 };

@@ -6,6 +6,8 @@ export function errorHandler(error: ErrorWithMessage, req: Request, res: Respons
     console.log(error);
 
     switch (error.type) {
+        case "conflict":
+            return res.status(httpStatus.CONFLICT).send(error.message);
         case "badRequest":
             return res.status(httpStatus.BAD_REQUEST).send(error.message);
         case "notFound":
