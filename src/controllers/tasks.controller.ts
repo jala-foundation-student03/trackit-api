@@ -27,6 +27,16 @@ async function update(req: Request, res: Response) {
     return res.status(httpStatus.NO_CONTENT).send("Task updated");
 }
 
+async function delay(req: Request, res: Response) {
+    const taskId = Number(req.params.taskId);
+    if (isNaN(taskId)) {
+        throw { type: "badRequest", message: "Invalid task Id" };
+    }
+
+    await tasksService.delay(taskId);
+    return res.status(httpStatus.NO_CONTENT).send("Task canceled");
+}
+
 async function cancel(req: Request, res: Response) {
     const taskId = Number(req.params.taskId);
     if (isNaN(taskId)) {
@@ -61,4 +71,5 @@ export const tasksController = {
     complete,
     completeMany,
     get,
+    delay,
 };

@@ -112,6 +112,19 @@ function completeById(taskId: number) {
     );
 }
 
+function delayById(taskId: number) {
+    return db.query(
+        `
+        UPDATE tasks
+        SET 
+            "status" = 'overdue',
+            "updatedAt" = $1
+        WHERE id = $2
+    `,
+        [new Date(), taskId]
+    );
+}
+
 export const tasksRepository = {
     create,
     findAll,
@@ -119,4 +132,5 @@ export const tasksRepository = {
     updateById,
     cancelById,
     completeById,
+    delayById
 };

@@ -26,6 +26,25 @@ async function update(taskId: number, taskData: NewTask) {
     });
 }
 
+async function delay(taskId: number) {
+    const foundTask = await tasksRepository.findById(taskId);
+    if (!foundTask) {
+        throw { type: "notFound", message: "Task does not exist" };
+    }
+    if (foundTask.status === "overdue") {
+        throw { type: "conflict", message: "Task is already overdue" };
+    }
+    if (foundTask.status === "canceled") {
+        throw { type: "badRequest", message: "You can't complete a canceled task" };
+    }
+    if (foundTask.status === "completed") {
+        throw { type: "badRequest", message: "You can't delay a completed task" };
+    }
+
+    return tasksRepository.delayById(taskId);
+}
+
+
 async function cancel(taskId: number) {
     const foundTask = await tasksRepository.findById(taskId);
     if (!foundTask) {
@@ -78,4 +97,5 @@ export const tasksService = {
     complete,
     completeMany,
     findAll,
+    delay,
 };

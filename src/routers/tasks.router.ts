@@ -11,5 +11,6 @@ tasksRouter.put("/tasks/complete-tasks", validateSchema(schemaCompleteMany), tas
 tasksRouter.put("/tasks/:taskId", validateSchema(schemaUpdateTask), tasksController.update);
 tasksRouter.put("/tasks/:taskId/cancel", tasksController.cancel);
 tasksRouter.put("/tasks/:taskId/complete", tasksController.complete);
+tasksRouter.put("/tasks/:taskId/delay", tasksController.delay);
 
 export { tasksRouter };
