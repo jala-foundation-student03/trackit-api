@@ -15,7 +15,7 @@ npm i
 npm run dev
 ```
 
-## :world_map: Routes
+## :world_map: Endpoints
 ### post /tasks
 #### Creates a new task.
 ```
@@ -25,7 +25,7 @@ npm run dev
     category: string, optional
 }
 ```
-### get /tasks?orderByDueDate=true&category=&status
+### get /tasks?orderByDueDate=true&category=""&status=""
 #### Retrieves tasks, query params are optional
 ### put /tasks/:taskId
 #### Updates a task
